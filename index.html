@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>T24 OFS Messages</title>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.28-csp/vue.js"></script>
+		<style>
+body{ font-family:'Lato',sans-serif; font-weight:400; }
+h1,h2,h3,h4,h5,h6{ font-family:'Lato',sans-serif; font-weight:700; }
+.top-bar, .top-bar .menu, .top-bar .menu a { background-color:#21618C; color: #fff; font-weight:bold;}
+.top-bar .menu a{ display:block;}
+.top-bar .menu a:hover { color:#85C1E9; }
+.top-bar .menu a.active { color:#fff;background-color: #2471A3; }
+.iserr{color:red; font-weight:bold;}
+#footer{ margin:30px 0; border-top:1px solid #efefef; }
+#clipContent{border:2px solid #cdcdcd}
+#clipContent.highlight{border:2px solid #222}
+.copyright .built{display:none; color:#777; text-align:center;font-size:0.8em;font-style:italic;}
+.copyright:hover .built{display:block}
+.required{color:  #C70039}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<div class="row">
+				<div class="top-bar">
+					<div class="top-bar-left">
+						<ul class="menu">
+							<li><a v-bind:class="{'active':automsgspage}" 
+	  v-on:click="currentView='automsgs'">T24 OFS Message Generator</a></li>
+							<li><a v-bind:class="{'active':abbrpage}"
+	  v-on:click="currentView='abbr-component'">Common T24 Abbreviations</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="columns small-12">
+					<div v-if="loaded">
+						<component v-bind:is="currentView" 
+	  v-on:goautomsgs="currentView='automsgs'" 
+	  v-on:goabbr="currentView='abbr-component'" 
+	  keep-alive></component>
+					</div>
+					<div v-else>
+						<div class="text-center" style="font-size:3em;padding:100px;">
+							<p>Loading <i class="fa fa-spinner fa-spin"></i></p>
+						</div>
+					</div>	
+				</div>
+			</div><!--/.row-->
+
+			<div id="footer">
+				<div class="row">
+					<div class="columns small-12" >
+						<p><a href="/">T24 OFS Messages</a></p>
+					</div>
+				</div><!--/.row-->
+				<div class="row">
+					<div class="columns small-12 copyright">
+						<p class="help-text text-center">&copy; 2016
+						<p class="built">Built by <a href="https://etelej.com">Peter Etelej</a> with <a href="https://vuejs.org">Vuejs</a>, powered by <a href="https://github.com/peteretelej/dserve">dserve</a></p>
+					</div>
+				</div><!--/.row-->
+			</div>
+
+			<template id="automsgsTemplate">
+				<div class="row">
+					<div class="columns small-12">
+						<div class="callout">
+
+							<ul class="menu">
+								<li v-bind:class="{'active':pageTransaction}"><a href="#" v-on:click.stop="setPageTransaction">Transaction Request</a></li>
+								<li v-bind:class="{'active':pageEnquiry}"><a href="#" v-on:click.stop="setPageEnquiry">Enquiry Request</a></li>
+								<li class="menu-text" style="text-transform:uppercase">Generate OFS Messages</li>
+							</ul>
+							<br/>
+
+							<form v-on:submit.prevent>
+								<div v-if="pageTransaction">
+									<div class="row">
+										<div class="columns small-12 medium-4">
+											<label>Application <span class="required">*</span>
+												<input type="text" v-model="t24app" placeholder="ACCOUNT" />
+											</label>
+										</div>
+										<div class="columns small-12 medium-3">
+											<label>Version
+												<input type="text" v-model="t24vers" placeholder="P1" />
+											</label>
+										</div>
+										<div class="columns small-12 medium-3">
+											<label>Function
+												<input type="text" v-model="t24func" placeholder="I" />
+											</label>
+										</div>
+										<div class="columns small-12 medium-2">
+											<label>No. of Auth
+												<input type="number" v-model="t24auth" />
+											</label>
+										</div>
+
+									</div><!--/.row-->
+
+									<div class="row">
+										<div class="columns small-12 medium-4">
+											<div class="row">
+												<div class="columns small-12 medium-6">
+													<p>Process or Validate <span class="help-text">(optional)</span>
+													<label><input type="radio" v-model="t24process"  name="t24process" value="PROCESS"/>Process</label>
+													<label><input type="radio" v-model="t24process"  name="t24process" value="VALIDATE"/>Validate</label>
+													</p>
+												</div>
+												<div class="columns small-12 medium-4 end">
+													GTS Control <span class="help-text">(optional)</span>
+													<select v-model="t24gts">
+														<option selected="selected"></option>
+														<option >1</option>
+														<option >2</option>
+														<option >3</option>
+														<option >4</option>
+													</select>
+												</div>
+											</div><!--/.row-->
+										</div>
+										<div class="columns small-12 medium-8">
+											<div class="row">
+												<div class="columns small-12 medium-4">
+													<label>Username <span class="required">*</span>
+														<input type="text" v-model="t24user" placeholder="INPUTT" />
+													</label>
+												</div>
+												<div class="columns small-12 medium-4">
+													<label>Password <span class="required">*</span>
+														<input type="text" v-model="t24pass" placeholder="123456" />
+													</label>
+												</div>
+												<div class="columns small-12 medium-4">
+													<label>Company <span class="help-text">(optional)</span>
+														<input type="text" v-model="t24company" />
+													</label>
+												</div>
+											</div><!--/.row-->
+											<div class="row">
+												<div class="columns small-12 text-right">
+													<fieldset>Replace existing record: 
+														<input type="radio" v-model="t24replace"  name="t24replace" value="NO" checked/><label>No </label>
+														<input type="radio" v-model="t24replace"  name="t24replace" value="YES"/><label>Yes</label>
+													</fieldset>
+												</div>
+											</div><!--/.row-->
+										</div>
+									</div><!--/.row-->
+
+
+									<div class="row">
+										<div class="columns small-12 medium-3">
+											<label>Transaction ID <span class="help-text">(optional)</span>
+												<br/>
+												<input type="text" v-model="t24msgid" />
+											</label>
+										</div>
+										<div class="columns small-12 medium-9">
+											<label>Message Data <span class="help-text">(optional - comma separated values)</span>
+												<textarea v-model="t24msgdata" rows=2 placeholder="CUSTOMER=100724,CATEGORY=1001,CURRENCY=USD"></textarea>
+											</label>
+										</div>
+									</div><!--/.row-->
+								</div><!--/. /v-if-->
+
+								<div v-else>
+
+									<input type="hidden" v-model="t24app" placeholder="ENQUIRY.SELECT" />
+
+
+									<div class="row">
+										<div class="columns small-12 medium-4">
+											<label>Username
+												<input type="text" v-model="t24user" placeholder="INPUTT" />
+											</label>
+										</div>
+										<div class="columns small-12 medium-4 end">
+											<label>Password
+												<input type="text" v-model="t24pass" placeholder="123456" />
+											</label>
+										</div>
+									</div><!--/.row-->
+
+
+									<div class="row">
+										<div class="columns small-12 medium-3">
+											<label>ENQUIRY
+												<input type="text" v-model="t24msgid" placeholder="%ACCOUNT" />
+											</label>
+										</div>
+										<div class="columns small-12 medium-9">
+											<label>Message Data <span class="help-text">(optional - comma separated values)</span>
+												<textarea v-model="t24msgdata" placeholder="@ID:EQ=68907"></textarea>
+											</label>
+										</div>
+									</div><!--/.row-->
+								</div><!--/. /v-else-->
+
+								<button type="submit" class="button" v-on:click="generateMsg">Generate OFS Request</button>
+								<span v-if="iserr" class="label warning">{{message}}</span>
+								<span class="label success" v-bind:class="getMessage ? '': 'hide'">OFS Message generated below</span>
+							</form>
+						</div><!--/.callout-->
+					</div>
+				</div><!--/.row-->
+
+				<div class="row">
+					<div class="columns small-12">
+						<div class="callout" id="messageresult">
+							<textarea id="clipContent" v-bind:class="{'iserr':iserr, 'highlight': getMessage}" rows=3>{{message}}</textarea>
+							<div class="clipBtn button" data-clipboard-action="copy" data-clipboard-target="#clipContent">Click here to copy to Clipboard</div>
+						</div><!--/.callout-->
+					</div>
+				</div><!--/.row-->
+
+
+
+				<br/><br/>
+
+				<div class="row">
+					<div class="columns small-12 medium-9 medium-centered">
+						<h3>OFS REQUEST SYNTAX</h3>
+						<label>Transaction Request
+							<p class="callout" style="font-weight:bold">
+							<span style="color: #186a3b">OPERATION</span>,<span style="color:  #943126 ">OPTIONS</span>,<span style="color: #f5b041 ">USER INFORMATION</span>,<span style="color: #e74c3c ">TRANSACTION ID</span>,<span style="color:#2e86c1">Message Data <i>(comma separated)</i></span>
+							</p>
+						</label>
+						<label>Enquiry Request
+							<p class="callout" style="font-weight:bold">
+							<span style="color: #186a3b">ENQUIRY.SELECT</span>,<span style="color:  #943126 "></span>,<span style="color: #f5b041 ">USER INFORMATION</span>,<span style="color: #e74c3c">ENQUIRY</span>,<span style="color:#2e86c1">Message Data <i>(comma separated)</i></span>
+							</p>
+						</label>
+					</div>
+
+					<br/>
+				</div><!--/.row-->
+			</template>
+
+			<template id="t24abbrtemplate">
+				<div class="callout">
+					<h1>T24 Common Abbreviations</h1>
+					<dl>
+						<dt>T24</dt> <dd>Transaction 24</dd>
+						<dt>BP</dt> <dd>Banking Product</dd>
+						<dt>COB</dt> <dd>Close of Business</dd>
+						<dt>SMS</dt> <dd>Security Management System</dd>
+						<dt>OFS</dt> <dd>Open Financial System</dd>
+						<dt>OFSML</dt> <dd>OFS XML</dd>
+						<dt>SPF</dt> <dd>System Parameter File</dd>
+						<dt>CIF</dt> <dd>Customer Information File</dd>
+						<dt>TCS</dt> <dd>Temenos Connector Server</dd>
+						<dt>TOFC</dt> <dd>Temenos Open Connectivity Framework</dd>
+						<dt>TAFC</dt><dd>Temenos Application Framework for C</dd>
+						<dt>TAFJ</dt><dd>Temenos Application Framework for Java</dd>
+						<dt>TAABS</dt><dd>T24 Automated Analysis and Build System</dd>
+						<dt>TWS</dt><dd>T24 Web Services</dd>
+						<dt>TEFA</dt><dd>Temenos Enterprise Frameworks Architecture</dd>
+					</dl>
+				</div><!--/.callout-->
+			</template>
+		</div><!--/#app-->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.1/clipboard.min.js"></script>
+		<script src="main.js"></script>
+	</body>
+</html>
+
