@@ -3,24 +3,26 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>T24 OFS Messages</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<meta name="description" content="Generate T24 OFS Messages. Create OFS Transaction Request and Enquiry Request messages.">
+		<meta name="theme-color" content="#118ae9">
 		<link rel="manifest" href="/manifest.json">
 		<link href="/css/foundation.min.css" rel="stylesheet" />
 		<script src="/js/vue.min.js"></script>
 		<style>
-body{ font-family:Garamond,sans-serif; font-weight:400; }
-h1,h2,h3,h4,h5,h6{ font-family:'Lato',sans-serif; font-weight:700; }
-.top-bar, .top-bar .menu, .top-bar .menu a { background-color:#21618C; color: #fff; font-weight:bold;}
-.top-bar .menu a{ display:block;}
-.top-bar .menu a:hover { color:#85C1E9; }
-.top-bar .menu a.active { color:#fff;background-color: #2471A3; }
-.iserr{color:red; font-weight:bold;}
-#footer{ margin:30px 0; border-top:1px solid #efefef; }
-#clipContent{border:2px solid #cdcdcd}
-#clipContent.highlight{border:2px solid #222}
-.copyright .built{display:none; color:#777; text-align:center;font-size:0.8em;font-style:italic;}
-.copyright:hover .built{display:block}
-.required{color:  #C70039}
+			body{ font-family:Garamond,sans-serif; font-weight:400; }
+			h1,h2,h3,h4,h5,h6{ font-family:'Lato',sans-serif; font-weight:700; }
+			.top-bar, .top-bar .menu, .top-bar .menu a { background-color:#21618C; color: #fff; font-weight:bold;}
+			.top-bar .menu a{ display:block;}
+			.top-bar .menu a:hover { color:#85C1E9; }
+			.top-bar .menu a.active { color:#fff;background-color: #2471A3; }
+			.iserr{color:red; font-weight:bold;}
+			#footer{ margin:30px 0; border-top:1px solid #efefef; }
+			#clipContent{border:2px solid #cdcdcd}
+			#clipContent.highlight{border:2px solid #222}
+			.copyright .built{display:none; color:#777; text-align:center;font-size:0.8em;font-style:italic;}
+			.copyright:hover .built{display:block}
+			.required{color:  #C70039}
 		</style>
 	</head>
 	<body>
@@ -30,9 +32,9 @@ h1,h2,h3,h4,h5,h6{ font-family:'Lato',sans-serif; font-weight:700; }
 					<div class="top-bar-left">
 						<ul class="menu">
 							<li><a v-bind:class="{'active':automsgspage}" 
-	  v-on:click="currentView='automsgs'">T24 OFS Message Generator</a></li>
+									v-on:click="currentView='automsgs'">T24 OFS Message Generator</a></li>
 							<li><a v-bind:class="{'active':abbrpage}"
-	  v-on:click="currentView='abbr-component'">Common T24 Abbreviations</a></li>
+									v-on:click="currentView='abbr-component'">Common T24 Abbreviations</a></li>
 						</ul>
 					</div>
 				</div>
@@ -41,9 +43,9 @@ h1,h2,h3,h4,h5,h6{ font-family:'Lato',sans-serif; font-weight:700; }
 				<div class="columns small-12">
 					<div v-if="loaded">
 						<component v-bind:is="currentView" 
-	  v-on:goautomsgs="currentView='automsgs'" 
-	  v-on:goabbr="currentView='abbr-component'" 
-	  keep-alive></component>
+							v-on:goautomsgs="currentView='automsgs'" 
+							v-on:goabbr="currentView='abbr-component'" 
+							keep-alive></component>
 					</div>
 					<div v-else>
 						<div class="text-center" style="font-size:3em;padding:100px;">
@@ -60,10 +62,10 @@ h1,h2,h3,h4,h5,h6{ font-family:'Lato',sans-serif; font-weight:700; }
 						<div class="copyright" style="margin:50px auto">
 							<p class="text-center help-text">By Peter Etelej <a href="https://etelej.com">(etelej.com)</a></p>
 							<p class="text-center">
-							<!-- Place this tag where you want the button to render. -->
-							<a class="github-button" href="https://github.com/peteretelej/t24-ofs" data-size="large" data-show-count="true" aria-label="Star peteretelej/t24-ofs on GitHub">Star</a>
-							<a class="github-button" href="https://github.com/peteretelej/t24-ofs/fork" data-size="large" data-show-count="true" aria-label="Fork peteretelej/t24-ofs on GitHub">Fork</a>
-							<a class="github-button" href="https://github.com/peteretelej/t24-ofs/archive/master.zip" data-size="large" aria-label="Download peteretelej/t24-ofs on GitHub">Download</a>
+								<!-- Place this tag where you want the button to render. -->
+								<a class="github-button" href="https://github.com/peteretelej/t24-ofs" data-size="large" data-show-count="true" aria-label="Star peteretelej/t24-ofs on GitHub">Star</a>
+								<a class="github-button" href="https://github.com/peteretelej/t24-ofs/fork" data-size="large" data-show-count="true" aria-label="Fork peteretelej/t24-ofs on GitHub">Fork</a>
+								<a class="github-button" href="https://github.com/peteretelej/t24-ofs/archive/master.zip" data-size="large" aria-label="Download peteretelej/t24-ofs on GitHub">Download</a>
 							</p>
 
 							<p class="built">Built by <a href="https://etelej.com">Peter Etelej</a> with <a href="https://vuejs.org">Vuejs</a>, powered by <a href="https://github.com/peteretelej/dserve">dserve</a></p>
@@ -115,8 +117,8 @@ h1,h2,h3,h4,h5,h6{ font-family:'Lato',sans-serif; font-weight:700; }
 											<div class="row">
 												<div class="columns small-12 medium-6">
 													<p>Process or Validate <span class="help-text">(optional)</span>
-													<label><input type="radio" v-model="t24process"  name="t24process" value="PROCESS"/>Process</label>
-													<label><input type="radio" v-model="t24process"  name="t24process" value="VALIDATE"/>Validate</label>
+														<label><input type="radio" v-model="t24process"  name="t24process" value="PROCESS"/>Process</label>
+														<label><input type="radio" v-model="t24process"  name="t24process" value="VALIDATE"/>Validate</label>
 													</p>
 												</div>
 												<div class="columns small-12 medium-4 end">
@@ -235,12 +237,12 @@ h1,h2,h3,h4,h5,h6{ font-family:'Lato',sans-serif; font-weight:700; }
 						<h3>OFS REQUEST SYNTAX</h3>
 						<label>Transaction Request
 							<p class="callout" style="font-weight:bold">
-							<span style="color: #186a3b">OPERATION</span>,<span style="color:  #943126 ">OPTIONS</span>,<span style="color: #f5b041 ">USER INFORMATION</span>,<span style="color: #e74c3c ">TRANSACTION ID</span>,<span style="color:#2e86c1">Message Data <i>(comma separated)</i></span>
+								<span style="color: #186a3b">OPERATION</span>,<span style="color:  #943126 ">OPTIONS</span>,<span style="color: #f5b041 ">USER INFORMATION</span>,<span style="color: #e74c3c ">TRANSACTION ID</span>,<span style="color:#2e86c1">Message Data <i>(comma separated)</i></span>
 							</p>
 						</label>
 						<label>Enquiry Request
 							<p class="callout" style="font-weight:bold">
-							<span style="color: #186a3b">ENQUIRY.SELECT</span>,<span style="color:  #943126 "></span>,<span style="color: #f5b041 ">USER INFORMATION</span>,<span style="color: #e74c3c">ENQUIRY</span>,<span style="color:#2e86c1">Message Data <i>(comma separated)</i></span>
+								<span style="color: #186a3b">ENQUIRY.SELECT</span>,<span style="color:  #943126 "></span>,<span style="color: #f5b041 ">USER INFORMATION</span>,<span style="color: #e74c3c">ENQUIRY</span>,<span style="color:#2e86c1">Message Data <i>(comma separated)</i></span>
 							</p>
 						</label>
 					</div>

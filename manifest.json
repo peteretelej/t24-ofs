@@ -4,8 +4,7 @@
   "theme_color": "#118ae9",
   "background_color": "#2196f3",
   "display": "standalone",
-  "orientation": "landscape",
-  "Scope": "/",
+  "scope": "/",
   "start_url": "/",
   "icons": [
     {
@@ -48,6 +47,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "splash_pages": null
+  ]
 }
