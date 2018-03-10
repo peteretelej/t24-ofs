@@ -1,4 +1,4 @@
-var cacheName="ofs-v1"
+var cacheName="ofs-v2"
 
 self.addEventListener("install", function(event){
 	event.waitUntil(
@@ -6,7 +6,6 @@ self.addEventListener("install", function(event){
 			cache.addAll([
 				"/",
 				"/favicon.ico",
-				"/sw.js",
 				"/manifest.json",
 				"/css/foundation.min.css",
 				"/js/vue.min.js",
