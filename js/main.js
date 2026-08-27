@@ -43,6 +43,23 @@ Vue.component("automsgs",{
 			this.getMessage =true
 			setTimeout(this.disableMsg,1500)
 		},
+		clearForm: function(){
+			// Clear already generated OFS message
+			this.t24app = '';
+			this.t24vers = '';
+			this.t24func = '';
+			this.t24auth = '';
+			this.t24user = '';
+			this.t24pass = '';
+			this.t24company = '';
+			this.t24msgid = '';
+			this.t24msgdata = '';
+			this.t24process = '';
+			this.t24gts = '';
+			this.t24replace = '';
+			this.message = '';
+			this.iserr = false;
+		},
 		goAutoMsg: function(){
 			this.$emit("goAutoMsg")
 		}
@@ -97,13 +114,26 @@ Vue.component("automsgs",{
 			}
 
 			msg += ","
-			msg += this.t24msgid
+			// Handle special characters in id.
+			// VERSION id in T24 is applicationName,versionName so replace , with ?. Example ACCOUNT,CURR will be ACCOUNT?CURR in OFS
+			// BATCH & TSA.SERVICE id in T24 is companyMnemonic/id so replace / with ^. Example BNK/AC.EOD will be BNK^AC.EOD
+			var transId = this.t24msgid
+			transId = transId.replace(",", "?")
+			transId = transId.replace("/", "^")
+			msg += transId
 
 			if (this.t24msgdata !== ""){
 				msg += ","
-				msg +=this.t24msgdata
+				var t24msg = this.t24msgdata
+				// replace special characters in message
+				t24msg = t24msg.replace("_","'_'")
+				t24msg = t24msg.replace("?","%?%")	// ? is replacement of , but if its real ? then %?% preserves it
+				t24msg = t24msg.replace("^","%^%")	// ^ is replacement of / but if its real ^ then %^% preserves it
+				t24msg = t24msg.replace("|","%|%")	// | is replacement of "" but if its real | then %|% preserves it
+				t24msg = t24msg.replace('"',"|")	
+				msg +=t24msg
 			}
-
+			
 			msg = msg.replace("//,","/,")
 			msg = msg.replace("/,",",")
 			msg = msg.trim()
