@@ -8,6 +8,6 @@ Generate T24 OFS Messages
 Available online at: [ofs.etelej.com](https://ofs.etelej.com)
 
 ## Usage
-You can either;
-- Simply point your http webserver to `index.html` 
-- Use the `docker-launch.sh` script (`./docker-launch.sh`) if you have docker and Go on your system
+
+- Use the hosted app at [ofs.etelej.com](https://ofs.etelej.com).
+- Or serve this directory with any static web server.
