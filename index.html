@@ -153,10 +153,14 @@
 											</div><!--/.row-->
 											<div class="row">
 												<div class="columns small-12 text-right">
-													<fieldset>Replace existing record: 
-														<input type="radio" v-model="t24replace"  name="t24replace" value="NO" checked/><label>No </label>
-														<input type="radio" v-model="t24replace"  name="t24replace" value="YES"/><label>Yes</label>
-													</fieldset>
+													<span style="margin-right: 20px;">Use replacement characters: 
+														<input type="radio" v-model="t24replacementChar" name="t24replacementChar" value="NO" checked/><label>No </label>
+														<input type="radio" v-model="t24replacementChar" name="t24replacementChar" value="YES"/><label>Yes</label>
+													</span>
+													<span>Replace existing record: 
+														<input type="radio" v-model="t24replace" name="t24replace" value="NO" checked/><label>No </label>
+														<input type="radio" v-model="t24replace" name="t24replace" value="YES"/><label>Yes</label>
+													</span>
 												</div>
 											</div><!--/.row-->
 										</div>
@@ -255,6 +259,66 @@
 					</div>
 
 					<br/>
+				</div><!--/.row-->
+				<div class="row">
+					<div class="columns small-12 medium-9 medium-centered">
+						<h3>SPECIAL CHARACTER REPLACEMENTS</h3>
+						<table>
+							<thead>
+								<tr>
+									<th>Character</th>
+									<th>Symbol</th>
+									<th>OFS Replacement</th>
+									<th>Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Slash</td>
+									<td><code>/</code></td>
+									<td><code>^</code></td>
+									<td>Used in BATCH &amp; TSA.SERVICE IDs (e.g. BNK/AC.EOD -> BNK^AC.EOD)</td>
+								</tr>
+								<tr>
+									<td>Comma</td>
+									<td><code>,</code></td>
+									<td><code>?</code></td>
+									<td>Used in VERSION IDs (e.g. ACCOUNT,CURR -> ACCOUNT?CURR)</td>
+								</tr>
+								<tr>
+									<td>Underscore</td>
+									<td><code>_</code></td>
+									<td><code>'_'</code></td>
+									<td>Preserved as literal _ in message data</td>
+								</tr>
+								<tr>
+									<td>Question Mark</td>
+									<td><code>?</code></td>
+									<td><code>%?%</code></td>
+									<td>Preserved as literal ? in message data</td>
+								</tr>
+								<tr>
+									<td>Caret</td>
+									<td><code>^</code></td>
+									<td><code>%^%</code></td>
+									<td>Preserved as literal ^ in message data</td>
+								</tr>
+								<tr>
+									<td>Pipe</td>
+									<td><code>|</code></td>
+									<td><code>%|%</code></td>
+									<td>Preserved as literal | in message data</td>
+								</tr>
+								<tr>
+									<td>Double Quote</td>
+									<td><code>"</code></td>
+									<td><code>|</code></td>
+									<td>Acts as " in message data</td>
+								</tr>
+							</tbody>
+						</table>
+						<p class="help-text" style="color: #2e86c1">* Underscore, Question Mark, Caret, Pipe and Double Quote replacements apply only when <strong>Use replacement characters</strong> is set to <strong>Yes</strong>.</p>
+					</div>
 				</div><!--/.row-->
 			</template>
 
