@@ -6,9 +6,9 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<meta name="description" content="Generate T24 OFS Messages. Create OFS Transaction Request and Enquiry Request messages.">
 		<meta name="theme-color" content="#118ae9">
-		<link rel="manifest" href="/manifest.json">
-		<link href="/css/foundation.min.css" rel="stylesheet" />
-		<script src="/js/vue.min.js"></script>
+		<link rel="manifest" href="./manifest.json">
+		<link href="./css/foundation.min.css" rel="stylesheet" />
+		<script src="./js/vue.min.js"></script>
 		<style>
 			body{ font-family:Garamond,sans-serif; font-weight:400; }
 			h1,h2,h3,h4,h5,h6{ font-family:'Lato',sans-serif; font-weight:700; }
@@ -68,7 +68,7 @@
 								<a class="github-button" href="https://github.com/peteretelej/t24-ofs/archive/master.zip" data-size="large" aria-label="Download peteretelej/t24-ofs on GitHub">Download</a>
 							</p>
 
-							<p class="built">Built by <a href="https://etelej.com">Peter Etelej</a> with <a href="https://vuejs.org">Vuejs</a>, powered by <a href="https://github.com/peteretelej/dserve">dserve</a></p>
+							<p class="built">Built by <a href="https://etelej.com">Peter Etelej</a> with <a href="https://vuejs.org">Vuejs</a></p>
 						</div>
 					</div>
 				</div><!--/.row-->
@@ -345,16 +345,13 @@
 				</div><!--/.callout-->
 			</template>
 		</div><!--/#app-->
-		<script src="/js/clipboard.min.js"></script>
+		<script src="./js/clipboard.min.js"></script>
 		<script async defer src="https://buttons.github.io/buttons.js"></script>
-		<script src="/js/main.js"></script>
+		<script src="./js/main.js"></script>
 		<script>
 			if (navigator.serviceWorker){
-				if (!navigator.serviceWorker.controller){
-					navigator.serviceWorker.register("/sw.js")
-				}
+				navigator.serviceWorker.register("./sw.js")
 			}
 		</script>
 	</body>
 </html>
-
