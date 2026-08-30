@@ -13,7 +13,7 @@ Vue.component("automsgs",{
 			pageEnquiry:false,
 			t24app: "",t24vers:"",t24func:"",t24auth:"",t24process:"",
 			t24user:"",t24pass:"",t24msgid:"",t24msgdata:"",
-			t24company:"",t24replace:"",t24gts:"",
+			t24company:"",t24replace:"",t24gts:"",t24replacementChar:"",
 			getMessage:false
 		}
 	},
@@ -23,7 +23,7 @@ Vue.component("automsgs",{
 			this.t24func=""; this.t24auth="", this.t24process=""
 			this.t24msgid=""; this.t24msgdata=""
 			this.t24company="";this.t24replace="",this.t24gts=""
-
+			this.t24replacementChar=""
 		},
 		setPageTransaction: function(){
 			this.pageTransaction = true
@@ -42,6 +42,24 @@ Vue.component("automsgs",{
 		generateMsg: function(){
 			this.getMessage =true
 			setTimeout(this.disableMsg,1500)
+		},
+		clearForm: function(){
+			// Clear already generated OFS message
+			this.getMessage = false;
+			this.t24app = this.pageEnquiry ? "ENQUIRY.SELECT" : '';
+			this.t24vers = '';
+			this.t24func = '';
+			this.t24auth = '';
+			this.t24user = '';
+			this.t24pass = '';
+			this.t24company = '';
+			this.t24msgid = '';
+			this.t24msgdata = '';
+			this.t24process = '';
+			this.t24gts = '';
+			this.t24replace = 'NO';
+			this.t24replacementChar = 'NO'
+			this.iserr = false;
 		},
 		goAutoMsg: function(){
 			this.$emit("goAutoMsg")
@@ -97,13 +115,28 @@ Vue.component("automsgs",{
 			}
 
 			msg += ","
-			msg += this.t24msgid
+			// Handle special characters in id.
+			// VERSION id in T24 is applicationName,versionName so replace , with ?. Example ACCOUNT,CURR will be ACCOUNT?CURR in OFS
+			// BATCH & TSA.SERVICE id in T24 is companyMnemonic/id so replace / with ^. Example BNK/AC.EOD will be BNK^AC.EOD
+			var transId = this.t24msgid
+			transId = transId.replace(/,/g, "?");
+			transId = transId.replace(/\//g, "^");
+			msg += transId
 
 			if (this.t24msgdata !== ""){
 				msg += ","
-				msg +=this.t24msgdata
+				var t24msg = this.t24msgdata
+				if (this.t24replacementChar == "YES") {
+					// replace special characters in message
+					t24msg = t24msg.replace(/_/g, "'_'")
+					t24msg = t24msg.replace(/\?/g,"%?%")	// ? is replacement of , but if its real ? then %?% preserves it
+					t24msg = t24msg.replace(/\^/g,"%^%")	// ^ is replacement of / but if its real ^ then %^% preserves it
+					t24msg = t24msg.replace(/\|/g,"%|%")	// | is replacement of " but if its real | then %|% preserves it
+					t24msg = t24msg.replace(/"/g,"|")	
+				}
+				msg +=t24msg
 			}
-
+			
 			msg = msg.replace("//,","/,")
 			msg = msg.replace("/,",",")
 			msg = msg.trim()

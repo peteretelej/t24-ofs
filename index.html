@@ -153,10 +153,14 @@
 											</div><!--/.row-->
 											<div class="row">
 												<div class="columns small-12 text-right">
-													<fieldset>Replace existing record: 
-														<input type="radio" v-model="t24replace"  name="t24replace" value="NO" checked/><label>No </label>
-														<input type="radio" v-model="t24replace"  name="t24replace" value="YES"/><label>Yes</label>
-													</fieldset>
+													<span style="margin-right: 20px;">Use replacement characters: 
+														<input type="radio" v-model="t24replacementChar" name="t24replacementChar" value="NO" checked/><label>No </label>
+														<input type="radio" v-model="t24replacementChar" name="t24replacementChar" value="YES"/><label>Yes</label>
+													</span>
+													<span>Replace existing record: 
+														<input type="radio" v-model="t24replace" name="t24replace" value="NO" checked/><label>No </label>
+														<input type="radio" v-model="t24replace" name="t24replace" value="YES"/><label>Yes</label>
+													</span>
 												</div>
 											</div><!--/.row-->
 										</div>
@@ -194,6 +198,11 @@
 												<input type="text" v-model="t24pass" placeholder="123456" />
 											</label>
 										</div>
+										<div class="columns small-12 medium-4">
+											<label>Company <span class="help-text">(optional)</span>
+												<input type="text" v-model="t24company" />
+											</label>
+										</div>
 									</div><!--/.row-->
 
 
@@ -212,6 +221,8 @@
 								</div><!--/. /v-else-->
 
 								<button type="submit" class="button" v-on:click="generateMsg">Generate OFS Request</button>
+								<!-- Added clear button to clear already generated message -->
+								<button type="button" class="button secondary" v-on:click="clearForm" style="margin-left:8px">Clear</button>
 								<span v-if="iserr" class="label warning">{{message}}</span>
 								<span class="label success" v-bind:class="getMessage ? '': 'hide'">OFS Message generated below</span>
 							</form>
@@ -248,6 +259,66 @@
 					</div>
 
 					<br/>
+				</div><!--/.row-->
+				<div class="row">
+					<div class="columns small-12 medium-9 medium-centered">
+						<h3>SPECIAL CHARACTER REPLACEMENTS</h3>
+						<table>
+							<thead>
+								<tr>
+									<th>Character</th>
+									<th>Symbol</th>
+									<th>OFS Replacement</th>
+									<th>Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Slash</td>
+									<td><code>/</code></td>
+									<td><code>^</code></td>
+									<td>Used in BATCH &amp; TSA.SERVICE IDs (e.g. BNK/AC.EOD -&gt BNK^AC.EOD)</td>
+								</tr>
+								<tr>
+									<td>Comma</td>
+									<td><code>,</code></td>
+									<td><code>?</code></td>
+									<td>Used in VERSION IDs (e.g. ACCOUNT,CURR -&gt ACCOUNT?CURR)</td>
+								</tr>
+								<tr>
+									<td>Underscore</td>
+									<td><code>_</code></td>
+									<td><code>'_'</code></td>
+									<td>Preserved as literal _ in message data</td>
+								</tr>
+								<tr>
+									<td>Question Mark</td>
+									<td><code>?</code></td>
+									<td><code>%?%</code></td>
+									<td>Preserved as literal ? in message data</td>
+								</tr>
+								<tr>
+									<td>Caret</td>
+									<td><code>^</code></td>
+									<td><code>%^%</code></td>
+									<td>Preserved as literal ^ in message data</td>
+								</tr>
+								<tr>
+									<td>Pipe</td>
+									<td><code>|</code></td>
+									<td><code>%|%</code></td>
+									<td>Preserved as literal | in message data</td>
+								</tr>
+								<tr>
+									<td>Double Quote</td>
+									<td><code>"</code></td>
+									<td><code>|</code></td>
+									<td>Acts as " in message data</td>
+								</tr>
+							</tbody>
+						</table>
+						<p class="help-text" style="color: #2e86c1">* Underscore, Question Mark, Caret, Pipe and Double Quote replacements apply only when <strong>Use replacement characters</strong> is set to <strong>Yes</strong>.</p>
+					</div>
 				</div><!--/.row-->
 			</template>
 
